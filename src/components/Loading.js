@@ -5,3 +5,4 @@ export default class Loading extends Component {
   return <section className="loading">Loading</section>;
  }
 }
+
