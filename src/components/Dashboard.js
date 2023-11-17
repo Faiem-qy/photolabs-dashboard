@@ -18,11 +18,24 @@ class Dashboard extends Component {
     focused: null,// set initial value of focused to 1,2,3 or 4 as a test
   };
 
+  componentDidMount() {
+    const focused = JSON.parse(localStorage.getItem("focused"));
+
+    if (focused) {
+      this.setState({ focused });
+    }
+  }
+
+  componentDidUpdate(previousProps, previousState) {
+    if (previousState.focused !== this.state.focused) {
+      localStorage.setItem("focused", JSON.stringify(this.state.focused));
+    }
+  }
 
   // added code to set the value of focused back to null if the value of focused is currently set to a panel
   selectPanel = id => {
     this.setState(previousState => ({
-      focused: previousState.focused !== null ? null : id
+      focused: previousState.focused !== null ? null : id,
     }));
   };
 
