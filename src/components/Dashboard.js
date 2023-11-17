@@ -8,14 +8,24 @@ import Panel from "./Panel";
 
 class Dashboard extends Component {
   state = {
-    loading: false
+    loading: false,
+    focused: null,// set initial value of focused to 1,2,3 or 4 as a test
+  };
+
+
+  // made selectPanel into a function
+  selectPanel(id) {
+    this.setState({
+      focused: id,
+    });
   };
 
 
 
   render() {
-    const dashboardClasses = classnames("dashboard");
-
+    const dashboardClasses = classnames("dashboard", {
+      "dashboard--focused": this.state.focused
+    });
     const data = [
       {
         id: 1,
@@ -44,14 +54,16 @@ class Dashboard extends Component {
       return <Loading />;
     }
 
-    const panels = data.map(panel => (
-      <Panel
-        key={panel.id}
-        id={panel.id}
-        label={panel.label}
-        value={panel.value}
-      />
-    ));
+    const panels = (this.state.focused ? data.filter(panel => this.state.focused === panel.id) : data)
+      .map(panel => (
+        <Panel
+          key={panel.id}
+          id={panel.id}
+          label={panel.label}
+          value={panel.value}
+          onSelect={this.selectPanel}
+        />
+      ));
 
     return <main className={dashboardClasses}>{panels}</main>;
   }

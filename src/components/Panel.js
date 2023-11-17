@@ -2,15 +2,15 @@ import React, { Component } from "react";
 
 class Panel extends Component {
   render() {
-    const { label, value } = this.props;
+    const { id, label, value, onSelect } = this.props; // added id and onSelect
 
     return (
-      <section
-        className="dashboard__panel"
-      >
-        <h1 className="dashboard__panel-header">{label}</h1>
-        <p className="dashboard__panel-value">{value}</p>
-      </section>
+      <div className="panel" >
+        <section className="dashboard__panel" onClick={() => onSelect(id)}> {/* added click listener */}
+          <h1 className="dashboard__panel-header">{label}</h1>
+          <p className="dashboard__panel-value">{value}</p>
+        </section>
+      </div>
     );
   }
 }
