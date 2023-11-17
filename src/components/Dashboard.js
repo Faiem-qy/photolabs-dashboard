@@ -7,14 +7,20 @@ import Panel from "./Panel";
 
 
 class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.selectPanel = this.selectPanel.bind(this);
+    // binding instance method in the constuctor
+  }
+
   state = {
     loading: false,
     focused: null,// set initial value of focused to 1,2,3 or 4 as a test
   };
 
 
-  // made selectPanel into a function
-  selectPanel(id) {
+  // change selectPanel to arrow function
+  selectPanel = id => {
     this.setState({
       focused: id,
     });
