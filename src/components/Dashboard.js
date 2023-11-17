@@ -20,7 +20,7 @@ class Dashboard extends Component {
   }
 
   state = {
-    loading: false, //set loading to true
+    loading: true, //set loading to true
     focused: null,
     photos: [],// added empty arrays for photos and topics
     topcis: [],
@@ -40,7 +40,7 @@ class Dashboard extends Component {
     Promise.all(urlsPromise)
       .then(([photos, topics]) => {
         this.setState({
-          loading: true,
+          loading: false,
           photos: photos,
           topics: topics,
         });
