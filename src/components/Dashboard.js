@@ -4,6 +4,12 @@ import classnames from "classnames";
 import Loading from "./Loading";
 import Panel from "./Panel";
 
+import {
+  getTotalPhotos,
+  getTotalTopics,
+  getUserWithMostUploads,
+  getUserWithLeastUploads
+} from "helpers/selectors";
 
 
 class Dashboard extends Component {
@@ -14,8 +20,10 @@ class Dashboard extends Component {
   }
 
   state = {
-    loading: false,
-    focused: null,// set initial value of focused to 1,2,3 or 4 as a test
+    loading: false, //set loading to true
+    focused: null,
+    photos: [],// added empty arrays for photos and topics
+    topcis: [],
   };
 
   componentDidMount() {
@@ -24,6 +32,19 @@ class Dashboard extends Component {
     if (focused) {
       this.setState({ focused });
     }
+    const urlsPromise = [
+      "/api/photos",
+      "/api/topics",
+    ].map(url => fetch(url).then(response => response.json()));
+
+    Promise.all(urlsPromise)
+      .then(([photos, topics]) => {
+        this.setState({
+          loading: true,
+          photos: photos,
+          topics: topics,
+        });
+      });
   }
 
   componentDidUpdate(previousProps, previousState) {
@@ -49,39 +70,39 @@ class Dashboard extends Component {
       {
         id: 1,
         label: "Total Photos",
-        value: 10
+        getValue: getTotalPhotos
       },
       {
         id: 2,
         label: "Total Topics",
-        value: 4
+        getValue: getTotalTopics
       },
       {
         id: 3,
         label: "User with the most uploads",
-        value: "Allison Saeng"
+        getValue: getUserWithMostUploads
       },
       {
         id: 4,
         label: "User with the least uploads",
-        value: "Lukas Souza"
+        getValue: getUserWithLeastUploads
       }
     ];
 
 
     if (this.state.loading) {
+      // console.log(this.state);
       return <Loading />;
     }
 
     const panels = (this.state.focused ? data.filter(panel => this.state.focused === panel.id) : data)
       .map(panel => (
         <Panel
-          key={panel.id}
-          id={panel.id}
-          label={panel.label}
-          value={panel.value}
-          onSelect={event => this.selectPanel(panel.id)}
-        />
+        key={panel.id}
+        label={panel.label}
+        value={panel.getValue(this.state)}
+        onSelect={() => this.selectPanel(panel.id)}
+       />
       ));
 
     return <main className={dashboardClasses}>{panels}</main>;

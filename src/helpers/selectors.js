@@ -1,10 +1,13 @@
 export function getTotalPhotos(state) {
-  return state.photos.length;
+  // Check if state.photos is defined and is an array
+  return Array.isArray(state.photos) ? state.photos.length : 0;
 }
 
 export function getTotalTopics(state) {
-  return state.topics.length;
+  // Check if state.topics is defined and is an array
+  return Array.isArray(state.topics) ? state.topics.length : 0;
 }
+
 
 export function getUserWithMostUploads(state) {
   const arrayOfNames = state.photos.map((photo)=> photo.user.name);
