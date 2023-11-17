@@ -19,11 +19,11 @@ class Dashboard extends Component {
   };
 
 
-  // change selectPanel to arrow function
+  // added code to set the value of focused back to null if the value of focused is currently set to a panel
   selectPanel = id => {
-    this.setState({
-      focused: id,
-    });
+    this.setState(previousState => ({
+      focused: previousState.focused !== null ? null : id
+    }));
   };
 
 
@@ -67,7 +67,7 @@ class Dashboard extends Component {
           id={panel.id}
           label={panel.label}
           value={panel.value}
-          onSelect={this.selectPanel}
+          onSelect={event => this.selectPanel(panel.id)}
         />
       ));
 
